@@ -14,5 +14,16 @@
           <button class="btn btn-danger" type="submit">Delete</button>
     </div>
     </form></p>
+
+    <hr>
+
+    {{> comment-form}}
+    <h3>Comments</h3>
+
+    {{#each comments}}
+
+      {{> comment}}
+    {{/each}}
+
   </div>
 </div>

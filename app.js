@@ -3,7 +3,8 @@ const methodOverride = require('method-override')
 
 const app = express();
 const bodyParser = require('body-parser');
-
+const Review = require('./models/review');
+const Comment = require('./models/comment');
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
@@ -17,6 +18,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/rotten-potatoes
 app.use(methodOverride('_method'))
 
 
+/*
+
 const reviewSchema = mongoose.Schema({
   title: String,
   description: String,
@@ -26,7 +29,7 @@ const reviewSchema = mongoose.Schema({
 
 const Review = mongoose.model('Review', reviewSchema);
 
-
+*/
 
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -61,12 +64,17 @@ app.get('/reviews/new', (req, res) => {
 
 // SHOW
 app.get('/reviews/:id', (req, res) => {
-  Review.findById(req.params.id).then((review) => {
-    res.render('reviews-show', { review: review })
+  const findReviews = Review.findById(req.params.id)
+  const findComments = Comment.find({ reviewId: Object(req.params.id) })
+
+  Promise.all([findReviews, findComments]).then((values) => {
+    console.log(values)
+    res.render('reviews-show', { review: values[0], comments: values[1] })
   }).catch((err) => {
-    console.log(err.message);
+    console.log(err.message)
   })
 })
+
 
 // CREATE
 app.post('/reviews', (req, res) => {
@@ -102,6 +110,19 @@ app.delete('/reviews/:id', function (req, res) {
     console.log(err.message);
   })
 })
+
+// NEW Comment
+app.post('/reviews/comment', (req, res) => {
+  Comment.create(req.body).then((comment) => {
+    res.redirect('/reviews/' + comment.reviewId)
+  }).catch((err) => {
+    console.log(err.message)
+  })
+})
+
+
+
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('App listening on port 3000!');
