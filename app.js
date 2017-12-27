@@ -1,4 +1,6 @@
 const express = require('express');
+const methodOverride = require('method-override')
+
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -9,20 +11,21 @@ var exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/rotten-potatoes', { useMongoClient: true });
 
-const Review = mongoose.model('Review', {
-  title: String
-});
+// override with POST having ?_method=DELETE or ?_method=PUT
+app.use(methodOverride('_method'))
 
 
-// CREATE
-app.post('/reviews', (req, res) => {
-  Review.create(req.body).then((review) => {
-    console.log(review);
-    res.redirect('/');
-  }).catch((err) => {
-    console.log(err.message);
-  })
+const reviewSchema = mongoose.Schema({
+  title: String,
+  description: String,
+  movieTitle: String,
+  rating: String
 })
+
+const Review = mongoose.model('Review', reviewSchema);
+
+
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -51,6 +54,50 @@ app.get('/', (req, res) => {
 // NEW
 app.get('/reviews/new', (req, res) => {
   res.render('reviews-new', {});
+})
+
+// SHOW
+app.get('/reviews/:id', (req, res) => {
+  Review.findById(req.params.id).then((review) => {
+    res.render('reviews-show', { review: review })
+  }).catch((err) => {
+    console.log(err.message);
+  })
+})
+
+// CREATE
+app.post('/reviews', (req, res) => {
+  let review = new Review(req.body);
+  review.save((err,review) => {
+    if(err) throw err;
+    res.redirect('/reviews/' + review._id);
+  })
+})
+
+// EDIT
+app.get('/reviews/:id/edit', function (req, res) {
+  Review.findById(req.params.id, function(err, review) {
+    res.render('reviews-edit', {review: review});
+  })
+})
+
+// UPDATE
+app.put('/reviews/:id', (req, res) => {
+  Review.findByIdAndUpdate(req.params.id, req.body).then((review) => {
+    res.redirect('/reviews/' + review._id)
+  }).catch((err) => {
+    console.log(err.message)
+  })
+})
+
+// DELETE
+app.delete('/reviews/:id', function (req, res) {
+  console.log("DELETE review")
+  Review.findByIdAndRemove(req.params.id).then((review) => {
+    res.redirect('/');
+  }).catch((err) => {
+    console.log(err.message);
+  })
 })
 
 app.listen(3000, () => {
