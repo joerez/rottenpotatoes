@@ -60,3 +60,10 @@ h3 {
 .navbar-default .navbar-brand {
     color: #161e7d;
 }
+
+.reviewcon {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
