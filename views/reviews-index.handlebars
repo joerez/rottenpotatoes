@@ -1,12 +1,12 @@
 <h1>Reviews</h1>
+<div class="row">
+  {{#each reviews}}
+    <div class="col-sm-3">
+      <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
 
-<a href="/reviews/new">New Review</a>
-<hr>
-{{#each reviews}}
-  <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
-
-  <h3>{{this.movieTitle}}</h3>
-  <p>{{this.description}}
-  <p>Rating: {{this.rating}}/5 </p>
-    <hr>
-{{/each}}
+      <h3>{{this.movieTitle}}</h3>
+      <p>{{this.description}}
+      <p>Rating: {{this.rating}}/5 </p>
+    </div>
+  {{/each}}
+</div>
