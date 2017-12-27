@@ -103,6 +103,6 @@ app.delete('/reviews/:id', function (req, res) {
   })
 })
 
-app.listen(3000 || process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('App listening on port 3000!');
 })
