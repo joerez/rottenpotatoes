@@ -16,14 +16,15 @@
     </form></p>
 
     <hr>
+    <div class="commentback">
+      {{> comment-form}}
+      <h3>Comments</h3>
 
-    {{> comment-form}}
-    <h3>Comments</h3>
+      {{#each comments}}
 
-    {{#each comments}}
-
-      {{> comment}}
-    {{/each}}
-
+        {{> comment}}
+      {{/each}}
+      <hr>
+  </div>
   </div>
 </div>
