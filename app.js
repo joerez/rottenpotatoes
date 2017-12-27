@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
 var exphbs = require('express-handlebars');
 
 const mongoose = require('mongoose');
@@ -29,6 +31,7 @@ const Review = mongoose.model('Review', reviewSchema);
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+app.use(express.static('public'));
 
 /*app.get('/', (req, res) => {
   res.render('home', {msg: 'Hello World!'})

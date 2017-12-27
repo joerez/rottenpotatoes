@@ -1,12 +1,17 @@
-<h1>Reviews</h1>
+<h1 align="center">Rotten Potatoes Reviews</h1>
+<h4 align="center">Where Everyone's A Movie Critic</h4>
+<hr>
 <div class="row">
-  {{#each reviews}}
-    <div class="col-sm-3">
-      <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
 
-      <h3>{{this.movieTitle}}</h3>
-      <p>{{this.description}}
-      <p>Rating: {{this.rating}}/5 </p>
+  {{#each reviews}}
+    <div class="col-sm-4">
+        <div class="reviewbox">
+          <h2><a href="/reviews/{{this._id}}">{{this.title}}</a></h2>
+
+          <h3>Movie: {{this.movieTitle}}</h3>
+          <p>{{this.description}}
+          <p>Rating: {{this.rating}}/5 </p>
+        </div>
     </div>
   {{/each}}
 </div>
