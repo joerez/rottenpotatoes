@@ -7,4 +7,4 @@ What can you do with it?
 - You can comment on Reviews
 
 ## View Live Demo
-[View Website](www.morethanameme.com)
+[View Website](morethanameme.com)
